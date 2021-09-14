@@ -8,7 +8,7 @@ class Share {
     public synchronized void incr() throws InterruptedException {
         //第二步 判断 干活 通知
         while(number != 0) { //判断number值是否是0，如果不是0，等待
-            this.wait(); //在哪里睡，就在哪里醒
+            this.wait(); //在哪里睡，就在哪里醒。因此必须使用while循环判断而不能使用if判断，否则会存在虚假唤醒问题
         }
         //如果number值是0，就+1操作
         number++;
