@@ -8,15 +8,17 @@ class LTicket {
     private int number = 30;
 
     //创建可重入锁
-    private final ReentrantLock lock = new ReentrantLock(true);
+    private final ReentrantLock lock = new ReentrantLock();
+
     //卖票方法
     public void sale() {
         //上锁
         lock.lock();
         try {
             //判断是否有票
-            if(number > 0) {
-                System.out.println(Thread.currentThread().getName()+" ：卖出"+(number--)+" 剩余："+number);
+            if (number > 0) {
+                number--;
+                System.out.println(Thread.currentThread().getName() + " ：卖出" + (30 - number) + " 剩余：" + number);
             }
         } finally {
             //解锁
@@ -27,27 +29,25 @@ class LTicket {
 
 public class LSaleTicket {
     //第二步 创建多个线程，调用资源类的操作方法
-    //创建三个线程
     public static void main(String[] args) {
-
         LTicket ticket = new LTicket();
 
-        new Thread(()-> {
+        new Thread(() -> {
             for (int i = 0; i < 40; i++) {
                 ticket.sale();
             }
-        },"AA").start();
+        }, "AA").start();
 
-        new Thread(()-> {
+        new Thread(() -> {
             for (int i = 0; i < 40; i++) {
                 ticket.sale();
             }
-        },"BB").start();
+        }, "BB").start();
 
-        new Thread(()-> {
+        new Thread(() -> {
             for (int i = 0; i < 40; i++) {
                 ticket.sale();
             }
-        },"CC").start();
+        }, "CC").start();
     }
 }
